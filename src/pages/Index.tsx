@@ -9,7 +9,7 @@ const Index = () => {
   const { goals, addGoal, updateProgress, deleteGoal } = useGoals();
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen animated-gradient-bg">
       <div className="max-w-2xl mx-auto px-4 py-8 pb-24">
         <header className="text-center mb-8">
           <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-1.5 rounded-full text-sm font-medium mb-4">
