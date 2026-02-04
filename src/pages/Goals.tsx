@@ -2,31 +2,21 @@ import { useGoals } from '@/hooks/useGoals';
 import { GoalCard } from '@/components/GoalCard';
 import { AddGoalModal } from '@/components/AddGoalModal';
 import { EmptyState } from '@/components/EmptyState';
-import { StatsHeader } from '@/components/StatsHeader';
-import { Sparkles } from 'lucide-react';
 
-const Index = () => {
+const Goals = () => {
   const { goals, addGoal, updateProgress, deleteGoal } = useGoals();
 
   return (
     <div className="min-h-screen animated-gradient-bg">
       <div className="max-w-2xl mx-auto px-4 py-6 pb-24">
-        <header className="text-center mb-6">
-          <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-1.5 rounded-full text-sm font-medium mb-3">
-            <Sparkles className="h-4 w-4" />
-            2025
-          </div>
-          <h1 className="text-2xl md:text-3xl font-bold text-foreground mb-1">
-            Minhas Metas
-          </h1>
+        <header className="mb-6">
+          <h1 className="text-2xl font-bold text-foreground">Todas as Metas</h1>
           <p className="text-muted-foreground text-sm">
-            Acompanhe seu progresso e conquiste seus objetivos
+            Gerencie suas metas e acompanhe o progresso
           </p>
         </header>
 
-        {goals.length > 0 && <StatsHeader goals={goals} />}
-
-        <div className="flex justify-end mb-4">
+        <div className="flex justify-end mb-6">
           <AddGoalModal onAdd={addGoal} />
         </div>
 
@@ -49,4 +39,4 @@ const Index = () => {
   );
 };
 
-export default Index;
+export default Goals;
