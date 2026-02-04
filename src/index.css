@@ -6,6 +6,53 @@
 
 @layer base {
   :root {
+    --background: 210 20% 98%;
+    --foreground: 210 30% 10%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 210 30% 10%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 210 30% 10%;
+
+    --primary: 217 59% 36%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 210 20% 94%;
+    --secondary-foreground: 210 30% 15%;
+
+    --muted: 210 20% 94%;
+    --muted-foreground: 210 15% 45%;
+
+    --accent: 185 50% 92%;
+    --accent-foreground: 185 65% 25%;
+
+    --destructive: 0 62% 50%;
+    --destructive-foreground: 0 0% 100%;
+
+    --success: 185 65% 40%;
+    --success-foreground: 0 0% 100%;
+    
+    --warning: 38 92% 50%;
+    --warning-foreground: 210 30% 8%;
+
+    --border: 210 20% 88%;
+    --input: 210 20% 88%;
+    --ring: 185 65% 40%;
+
+    --radius: 1rem;
+
+    --sidebar-background: 210 20% 96%;
+    --sidebar-foreground: 210 30% 10%;
+    --sidebar-primary: 185 65% 35%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 210 20% 92%;
+    --sidebar-accent-foreground: 210 30% 10%;
+    --sidebar-border: 210 20% 88%;
+    --sidebar-ring: 185 65% 40%;
+  }
+
+  .dark {
     --background: 210 30% 8%;
     --foreground: 210 10% 95%;
 
@@ -39,8 +86,6 @@
     --border: 210 25% 20%;
     --input: 210 25% 20%;
     --ring: 185 65% 40%;
-
-    --radius: 1rem;
 
     --sidebar-background: 210 30% 10%;
     --sidebar-foreground: 210 10% 95%;
@@ -93,6 +138,18 @@
   }
   
   .animated-gradient-bg {
+    background: linear-gradient(
+      -45deg, 
+      hsl(210 20% 96%), 
+      hsl(185 50% 92%), 
+      hsl(210 20% 98%), 
+      hsl(185 40% 88%)
+    );
+    background-size: 400% 400%;
+    animation: gradient-shift 15s ease infinite;
+  }
+
+  .dark .animated-gradient-bg {
     background: linear-gradient(
       -45deg, 
       hsl(210 30% 5%), 

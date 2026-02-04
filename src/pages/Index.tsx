@@ -3,6 +3,7 @@ import { GoalCard } from '@/components/GoalCard';
 import { AddGoalModal } from '@/components/AddGoalModal';
 import { EmptyState } from '@/components/EmptyState';
 import { StatsHeader } from '@/components/StatsHeader';
+import { ThemeToggle } from '@/components/ThemeToggle';
 import { Sparkles } from 'lucide-react';
 
 const Index = () => {
@@ -12,6 +13,9 @@ const Index = () => {
     <div className="min-h-screen animated-gradient-bg">
       <div className="max-w-2xl mx-auto px-4 py-8 pb-24">
         <header className="text-center mb-8">
+          <div className="flex justify-end mb-4">
+            <ThemeToggle />
+          </div>
           <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-1.5 rounded-full text-sm font-medium mb-4">
             <Sparkles className="h-4 w-4" />
             2025
