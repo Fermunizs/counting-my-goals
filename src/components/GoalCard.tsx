@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Goal } from '@/types/goal';
 import { Button } from '@/components/ui/button';
 import { Minus, Plus, Trash2, Sparkles } from 'lucide-react';
+import { GoalTips } from '@/components/GoalTips';
 
 interface GoalCardProps {
   goal: Goal;
@@ -86,6 +87,8 @@ export function GoalCard({ goal, onUpdate, onDelete }: GoalCardProps) {
           Adicionar
         </Button>
       </div>
+
+      <GoalTips goal={goal} />
     </div>
   );
 }
