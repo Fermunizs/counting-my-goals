@@ -1,11 +1,12 @@
-import { Home, Target, BarChart3, Settings } from 'lucide-react';
+import { Home, Target, Wallet, BarChart3, Settings } from 'lucide-react';
 import { NavLink } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 
 const navItems = [
   { icon: Home, label: 'Início', path: '/' },
   { icon: Target, label: 'Metas', path: '/goals' },
-  { icon: BarChart3, label: 'Estatísticas', path: '/stats' },
+  { icon: Wallet, label: 'Finanças', path: '/finance' },
+  { icon: BarChart3, label: 'Stats', path: '/stats' },
   { icon: Settings, label: 'Ajustes', path: '/settings' },
 ];
 

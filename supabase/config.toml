@@ -1,1 +1,7 @@
 project_id = "dhgcmyhopfddsrzcancp"
+
+[functions.generate-goal-tips]
+verify_jwt = false
+
+[functions.generate-finance-tips]
+verify_jwt = false
