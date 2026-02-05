@@ -3,6 +3,7 @@ import { useSavingsTrail } from '@/hooks/useSavingsTrail';
 import { CreateTrailModal } from '@/components/finance/CreateTrailModal';
 import { SavingsTrailCard } from '@/components/finance/SavingsTrailCard';
 import { FinanceTips } from '@/components/finance/FinanceTips';
+import { MarketDashboard } from '@/components/finance/MarketDashboard';
 
 export default function Finance() {
   const { trail, createTrail, toggleDay, resetTrail, totalSaved, progress } = useSavingsTrail();
@@ -21,6 +22,11 @@ export default function Finance() {
         </header>
 
         <div className="space-y-6">
+          {/* Market Dashboard */}
+          <section>
+            <MarketDashboard />
+          </section>
+
           {/* Savings Trail Section */}
           <section>
             <div className="flex items-center gap-2 mb-4">
