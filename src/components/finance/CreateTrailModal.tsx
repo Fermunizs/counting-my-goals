@@ -74,7 +74,6 @@ export function CreateTrailModal({ onCreateTrail }: CreateTrailModalProps) {
               id="days"
               type="number"
               min="7"
-              max="365"
               value={days}
               onChange={(e) => setDays(e.target.value)}
             />
