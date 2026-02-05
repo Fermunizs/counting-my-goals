@@ -7,6 +7,7 @@ import { ThemeProvider } from "next-themes";
 import { BottomNav } from "@/components/BottomNav";
 import Index from "./pages/Index";
 import Goals from "./pages/Goals";
+import Finance from "./pages/Finance";
 import Stats from "./pages/Stats";
 import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
@@ -23,6 +24,7 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/goals" element={<Goals />} />
+            <Route path="/finance" element={<Finance />} />
             <Route path="/stats" element={<Stats />} />
             <Route path="/settings" element={<Settings />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
