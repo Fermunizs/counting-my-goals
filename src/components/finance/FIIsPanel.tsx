@@ -1,6 +1,7 @@
 import { useMarketData, FIIItem } from '@/hooks/useMarketData';
 import { Button } from '@/components/ui/button';
 import { Loader2, RefreshCw, Building2, Lightbulb } from 'lucide-react';
+import { FIIsChart } from './FIIsChart';
 
 export function FIIsPanel() {
   const { data, isLoading, error, fetchData } = useMarketData<FIIItem>('fiis');
@@ -48,6 +49,8 @@ export function FIIsPanel() {
             </div>
             <p className="text-sm text-muted-foreground">{data.summary}</p>
           </div>
+
+          <FIIsChart items={data.items} />
 
           <div className="space-y-3">
             {data.items.map((fii, i) => (
