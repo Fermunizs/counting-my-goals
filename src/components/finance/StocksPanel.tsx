@@ -1,6 +1,7 @@
 import { useMarketData, StockItem } from '@/hooks/useMarketData';
 import { Button } from '@/components/ui/button';
 import { Loader2, RefreshCw, TrendingUp, TrendingDown, Minus, Lightbulb } from 'lucide-react';
+import { StocksChart } from './StocksChart';
 
 const trendConfig = {
   up: { icon: TrendingUp, color: 'text-emerald-500', bg: 'bg-emerald-500/10', label: 'Alta' },
@@ -68,6 +69,8 @@ export function StocksPanel() {
             </div>
             <p className="text-sm text-muted-foreground">{data.summary}</p>
           </div>
+
+          <StocksChart items={data.items} />
 
           <div className="space-y-3">
             {data.items.map((stock, i) => {

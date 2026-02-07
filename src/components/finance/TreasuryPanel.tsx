@@ -1,6 +1,7 @@
 import { useMarketData, TreasuryItem } from '@/hooks/useMarketData';
 import { Button } from '@/components/ui/button';
 import { Loader2, RefreshCw, Landmark, Lightbulb } from 'lucide-react';
+import { TreasuryChart } from './TreasuryChart';
 
 export function TreasuryPanel() {
   const { data, isLoading, error, fetchData } = useMarketData<TreasuryItem>('treasury');
@@ -53,6 +54,8 @@ export function TreasuryPanel() {
             </div>
             <p className="text-sm text-muted-foreground">{data.summary}</p>
           </div>
+
+          <TreasuryChart items={data.items} />
 
           <div className="space-y-3">
             {data.items.map((item, i) => (
