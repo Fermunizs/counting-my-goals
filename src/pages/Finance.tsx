@@ -4,6 +4,7 @@ import { CreateTrailModal } from '@/components/finance/CreateTrailModal';
 import { SavingsTrailCard } from '@/components/finance/SavingsTrailCard';
 import { FinanceTips } from '@/components/finance/FinanceTips';
 import { MarketDashboard } from '@/components/finance/MarketDashboard';
+import { FinanceChatAgent } from '@/components/finance/FinanceChatAgent';
 
 export default function Finance() {
   const { trail, createTrail, toggleDay, resetTrail, totalSaved, progress } = useSavingsTrail();
@@ -78,6 +79,8 @@ export default function Finance() {
             />
           </section>
         </div>
+
+        <FinanceChatAgent />
       </div>
     </div>
   );
