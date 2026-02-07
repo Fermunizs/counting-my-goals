@@ -8,3 +8,6 @@ verify_jwt = false
 
 [functions.generate-market-info]
 verify_jwt = false
+
+[functions.finance-chat]
+verify_jwt = false
