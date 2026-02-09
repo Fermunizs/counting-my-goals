@@ -1,15 +1,23 @@
 import { useState, useRef, useEffect } from 'react';
-import { MessageCircle, Send, X, Trash2, Bot, User } from 'lucide-react';
+import { MessageCircle, Send, X, Trash2, Bot, User, Mic, MicOff, Volume2, VolumeX } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useFinanceChat } from '@/hooks/useFinanceChat';
+import { useVoiceChat } from '@/hooks/useVoiceChat';
 import ReactMarkdown from 'react-markdown';
 
 export function FinanceChatAgent() {
   const [isOpen, setIsOpen] = useState(false);
   const [input, setInput] = useState('');
+  const [autoSpeak, setAutoSpeak] = useState(false);
   const { messages, isLoading, sendMessage, clearChat } = useFinanceChat();
+  const {
+    isListening, isSpeaking, transcript,
+    supportsRecognition, supportsSynthesis,
+    startListening, stopListening, speak, stopSpeaking,
+  } = useVoiceChat();
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const lastMsgCountRef = useRef(0);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -18,6 +26,23 @@ export function FinanceChatAgent() {
   useEffect(() => {
     if (isOpen) inputRef.current?.focus();
   }, [isOpen]);
+
+  // Update input with live transcript
+  useEffect(() => {
+    if (transcript) setInput(transcript);
+  }, [transcript]);
+
+  // Auto-speak new assistant messages
+  useEffect(() => {
+    if (!autoSpeak || messages.length === 0) return;
+    if (messages.length > lastMsgCountRef.current && !isLoading) {
+      const last = messages[messages.length - 1];
+      if (last.role === 'assistant') {
+        speak(last.content);
+      }
+    }
+    lastMsgCountRef.current = messages.length;
+  }, [messages, isLoading, autoSpeak, speak]);
 
   const handleSend = () => {
     const trimmed = input.trim();
@@ -30,6 +55,17 @@ export function FinanceChatAgent() {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
       handleSend();
+    }
+  };
+
+  const handleVoiceToggle = () => {
+    if (isListening) {
+      stopListening();
+    } else {
+      startListening((text) => {
+        setInput('');
+        sendMessage(text);
+      });
     }
   };
 
@@ -57,18 +93,31 @@ export function FinanceChatAgent() {
       {isOpen && (
         <div className="fixed bottom-24 right-4 z-50 w-[calc(100vw-2rem)] max-w-sm h-[28rem] flex flex-col rounded-2xl border border-border bg-background shadow-2xl overflow-hidden animate-in slide-in-from-bottom-4 fade-in duration-300">
           {/* Header */}
-          <div className="flex items-center gap-3 px-4 py-3 border-b border-border bg-primary/5">
+          <div className="flex items-center gap-2 px-4 py-3 border-b border-border bg-primary/5">
             <div className="w-9 h-9 rounded-full bg-primary/20 flex items-center justify-center">
               <Bot className="h-5 w-5 text-primary" />
             </div>
             <div className="flex-1 min-w-0">
               <h3 className="font-semibold text-sm text-foreground">FinBot</h3>
-              <p className="text-xs text-muted-foreground">Seu assistente financeiro</p>
+              <p className="text-xs text-muted-foreground">
+                {isListening ? '🎙️ Ouvindo...' : isSpeaking ? '🔊 Falando...' : 'Seu assistente financeiro'}
+              </p>
             </div>
-            <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground" onClick={clearChat} title="Limpar conversa">
+            {supportsSynthesis && (
+              <Button
+                variant="ghost"
+                size="icon"
+                className={`h-8 w-8 ${autoSpeak ? 'text-primary' : 'text-muted-foreground'}`}
+                onClick={() => { setAutoSpeak(!autoSpeak); if (isSpeaking) stopSpeaking(); }}
+                title={autoSpeak ? 'Desativar voz' : 'Ativar voz automática'}
+              >
+                {autoSpeak ? <Volume2 className="h-4 w-4" /> : <VolumeX className="h-4 w-4" />}
+              </Button>
+            )}
+            <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground" onClick={() => { clearChat(); stopSpeaking(); }} title="Limpar conversa">
               <Trash2 className="h-4 w-4" />
             </Button>
-            <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground" onClick={() => setIsOpen(false)}>
+            <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground" onClick={() => { setIsOpen(false); stopSpeaking(); }}>
               <X className="h-4 w-4" />
             </Button>
           </div>
@@ -116,6 +165,15 @@ export function FinanceChatAgent() {
                   ) : (
                     msg.content
                   )}
+                  {msg.role === 'assistant' && supportsSynthesis && !isLoading && (
+                    <button
+                      onClick={() => speak(msg.content)}
+                      className="mt-1 text-xs text-muted-foreground hover:text-primary transition-colors"
+                      title="Ouvir resposta"
+                    >
+                      🔊 Ouvir
+                    </button>
+                  )}
                 </div>
                 {msg.role === 'user' && (
                   <div className="w-7 h-7 rounded-full bg-secondary flex items-center justify-center shrink-0 mt-0.5">
@@ -146,12 +204,24 @@ export function FinanceChatAgent() {
           {/* Input */}
           <div className="px-3 py-3 border-t border-border bg-background">
             <div className="flex items-center gap-2">
+              {supportsRecognition && (
+                <Button
+                  variant={isListening ? 'default' : 'ghost'}
+                  size="icon"
+                  className={`h-10 w-10 rounded-xl shrink-0 ${isListening ? 'animate-pulse bg-destructive hover:bg-destructive/90' : ''}`}
+                  onClick={handleVoiceToggle}
+                  disabled={isLoading}
+                  title={isListening ? 'Parar de ouvir' : 'Falar'}
+                >
+                  {isListening ? <MicOff className="h-4 w-4" /> : <Mic className="h-4 w-4" />}
+                </Button>
+              )}
               <input
                 ref={inputRef}
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={handleKeyDown}
-                placeholder="Pergunte sobre finanças..."
+                placeholder={isListening ? 'Ouvindo...' : 'Pergunte sobre finanças...'}
                 className="flex-1 h-10 px-4 rounded-xl bg-muted/50 border border-border text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary/50 transition-colors"
                 disabled={isLoading}
               />
